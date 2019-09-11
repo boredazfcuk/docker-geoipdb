@@ -8,7 +8,7 @@ Initialise(){
    echo "$(date '+%Y-%m-%d %H:%M:%S') INFO:    GeoLite2Legacy directory: ${APPDATA}"
    echo "$(date '+%Y-%m-%d %H:%M:%S') INFO:    GeoIP Database directory: ${DBDIR}"
 
-   if [ $(grep -c "update-geoip" /var/spool/root) -lt 1 ]; then
+   if [ $(grep -c "update-geoip.sh" /etc/crontabs/root) -lt 1 ]; then
       echo "$(date '+%Y-%m-%d %H:%M:%S') INFO:    Initialise crontab"
       MIN=$(((RANDOM%60)))
       echo -e "# min   hour    day     month   weekday command\n${MIN} 5 * * 4 /usr/local/bin/update-geoip.sh" > /tmp/crontab.tmp
@@ -62,3 +62,4 @@ UpdateDatabases(){
 Initialise
 GeoLite2Legacy
 UpdateDatabases
+
