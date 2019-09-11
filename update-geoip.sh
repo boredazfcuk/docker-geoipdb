@@ -8,12 +8,6 @@ Initialise(){
    echo "$(date '+%Y-%m-%d %H:%M:%S') INFO:    GeoLite2Legacy directory: ${APPDATA}"
    echo "$(date '+%Y-%m-%d %H:%M:%S') INFO:    GeoIP Database directory: ${DBDIR}"
 
-   echo "$(date '+%Y-%m-%d %H:%M:%S') INFO:    Correct owner and group of application and database directories, if required"
-   find "${DBDIR}" ! -user "${USER}" -exec chown "${USER}" {} \;
-   find "${DBDIR}" ! -group "${GROUP}" -exec chgrp "${GROUP}" {} \;
-   find "${APPBASE}" ! -user "${USER}" -exec chown "${USER}" {} \;
-   find "${APPBASE}" ! -group "${GROUP}" -exec chgrp "${GROUP}" {} \;
-
 #   if [ $(grep -c "update-geoip" /var/spool/root) -lt 1 ]; then
 #      echo "$(date '+%Y-%m-%d %H:%M:%S') INFO:    Initialise crontab"
 #      MIN=$(((RANDOM%60)))
