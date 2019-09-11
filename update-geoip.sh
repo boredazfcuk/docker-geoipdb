@@ -14,13 +14,13 @@ Initialise(){
    find "${APPBASE}" ! -user "${USER}" -exec chown "${USER}" {} \;
    find "${APPBASE}" ! -group "${GROUP}" -exec chgrp "${GROUP}" {} \;
 
-   if [ $(grep -c "update-geoip" /var/spool/root) -lt 1 ]; then
-      echo "$(date '+%Y-%m-%d %H:%M:%S') INFO:    Initialise crontab"
-      MIN=$(((RANDOM%60)))
-      echo -e "SHELL=/bin/ash\n\n# m h  dom mon dow   command\n${MIN} 5 * * 4 /usr/local/bin/update-geoip.sh" > /tmp/crontab.tmp
-      crontab /tmp/crontab.tmp
-      rm /tmp/crontab.tmp
-   }
+#   if [ $(grep -c "update-geoip" /var/spool/root) -lt 1 ]; then
+#      echo "$(date '+%Y-%m-%d %H:%M:%S') INFO:    Initialise crontab"
+#      MIN=$(((RANDOM%60)))
+#      echo -e "SHELL=/bin/ash\n\n# m h  dom mon dow   command\n${MIN} 5 * * 4 /usr/local/bin/update-geoip.sh" > /tmp/crontab.tmp
+#      crontab /tmp/crontab.tmp
+#      rm /tmp/crontab.tmp
+#   }
 }
 
 GeoLite2Legacy(){
