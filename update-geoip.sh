@@ -14,7 +14,7 @@ Initialise(){
       echo -e "# min   hour    day     month   weekday command\n${MIN} 5 * * 4 /usr/local/bin/update-geoip.sh" > /tmp/crontab.tmp
       crontab /tmp/crontab.tmp
       rm /tmp/crontab.tmp
-   }
+   fi
 }
 
 GeoLite2Legacy(){
