@@ -33,7 +33,7 @@ docker create \
    boredazfcuk/geoipdb
 ```
 
-When this container first starts up, it will create and folders it needs and display the variables it's using. It will also create a crontab entry to run the database update function between 4-5am on Wednesday mornings. I have randomised the minute so different installs will connect to the upstream servers at different times. Also, Maxmind release weekly updates to their database every Tuesday, so there's no point checking on other days.
+When this container first starts up, it will create and folders it needs and display the variables it's using. It will also create a crontab entry to run the database update function between 4-5am on Thursday mornings. I have randomised the minute so different installs will connect to the upstream servers at different times. Also, Maxmind release weekly updates to their database every Wednesday, so there's no point checking on other days.
 
 When this container performs an update, it will hog CPU resources as is is very processor intensive. As it's not a critical service, I have limited it to only using a single CPU core so it doesn't interfere with more important stuff.
 
