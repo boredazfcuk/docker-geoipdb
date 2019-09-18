@@ -20,7 +20,7 @@ echo "$(date '+%d/%m/%Y - %H:%M:%S') | Set launch script permissions" && \
 echo "$(date '+%d/%m/%Y - %H:%M:%S') | ***** BUILD COMPLETE *****"
 
 HEALTHCHECK --start-period=10s --interval=1m --timeout=10s \
-   CMD (if [ $(find "${DBDIR}" -type f -name "Geo*.dat" | wc -l) -ne 3 ] || [ $(find "${DBDIR}" -type f -name "Geo*.dat" -mtime +5 | wc -l) -ne 0 ]; then exit 1; fi)
+   CMD (if [ $(find "${DBDIR}" -type f -name "Geo*.dat" | wc -l) -ne 3 ] || [ $(find "${DBDIR}" -type f -name "Geo*.dat" -mmin +$((60*24*7)) | wc -l) -ne 0 ]; then exit 1; fi)
 
 VOLUME "${DBDIR}"
 WORKDIR "${APPBASE}"

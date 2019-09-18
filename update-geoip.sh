@@ -1,7 +1,7 @@
 #!/bin/ash
 
 Initialise(){
-   echo "$(date '+%Y-%m-%d %H:%M:%S') | ***** Starting GeoIPDb container using sherpya's geolite2legacy to convert to the legacy format *****"
+   echo "$(date '+%Y-%m-%d %H:%M:%S') INFO:    ***** Starting GeoIPDb container using sherpya's geolite2legacy to convert to the legacy format *****"
 
    if [ ! -e "${DBDIR}" ]; then echo "$(date '+%Y-%m-%d %H:%M:%S') WARNING: Database directory does not exist, creating ${DBDIR}"; mkdir -p "${DBDIR}"; fi
 
@@ -33,21 +33,21 @@ GeoLite2Legacy(){
 UpdateDatabases(){
    local ZIPTEMP=$(mktemp -d)
    local DBTEMP=$(mktemp -d)
-   if [ -z "$(find "${DBDIR}" -type f -name 'GeoIP.dat')" ] || [ "$(find "${DBDIR}" -type f -name 'GeoIP.dat' -mtime +5 | wc -l)" -ne 0 ]; then
+   if [ -z "$(find "${DBDIR}" -type f -name 'GeoIP.dat')" ] || [ "$(find "${DBDIR}" -type f -name 'GeoIP.dat' -mmin +$((60*24*7)) | wc -l)" -ne 0 ]; then
       echo "$(date '+%Y-%m-%d %H:%M:%S') INFO:    Install GeoIP Country database"
       if [ -e "${DBDIR}/GeoIP.dat" ]; then rm "${DBDIR}/GeoIP.dat"; fi
       curl -sS -L "${DBURL}/GeoLite2-Country-CSV.zip" > "${ZIPTEMP}/GeoLite2-Country-CSV.zip"
       python "${APPBASE}/geolite2legacy.py" -i "${ZIPTEMP}/GeoLite2-Country-CSV.zip" -f "${APPBASE}/geoname2fips.csv" -o "${DBTEMP}/GeoIP.dat"
       mv -f "${DBTEMP}/GeoIP.dat" "${DBDIR}"
    fi
-   if [ -z "$(find "${DBDIR}" -type f -name 'GeoLiteCity.dat')" ] || [ "$(find "${DBDIR}" -type f -name 'GeoLiteCity.dat' -mtime +5 | wc -l)" -ne 0 ]; then
+   if [ -z "$(find "${DBDIR}" -type f -name 'GeoLiteCity.dat')" ] || [ "$(find "${DBDIR}" -type f -name 'GeoLiteCity.dat' -mmin +$((60*24*7)) | wc -l)" -ne 0 ]; then
       echo "$(date '+%Y-%m-%d %H:%M:%S') INFO:    Install GeoIP City database"
       if [ -e "${DBDIR}/GeoLiteCity.dat" ]; then rm "${DBDIR}/GeoLiteCity.dat"; fi
       curl -sS -L "${DBURL}/GeoLite2-City-CSV.zip" > "${ZIPTEMP}/GeoLite2-City-CSV.zip"
       python "${APPBASE}/geolite2legacy.py" -i "${ZIPTEMP}/GeoLite2-City-CSV.zip" -f "${APPBASE}/geoname2fips.csv" -o "${DBTEMP}/GeoLiteCity.dat"
       mv -f "${DBTEMP}/GeoLiteCity.dat" "${DBDIR}"
    fi
-   if [ -z "$(find "${DBDIR}" -type f -name 'GeoIPASNum.dat')" ] || [ "$(find "${DBDIR}" -type f -name 'GeoIPASNum.dat' -mtime +5 | wc -l)" -ne 0 ]; then
+   if [ -z "$(find "${DBDIR}" -type f -name 'GeoIPASNum.dat')" ] || [ "$(find "${DBDIR}" -type f -name 'GeoIPASNum.dat' -mmin +$((60*24*7)) | wc -l)" -ne 0 ]; then
       echo "$(date '+%Y-%m-%d %H:%M:%S') INFO:    Install GeoIP ASNum database"
       if [ -e "${DBDIR}/GeoIPASNum.dat" ]; then rm "${DBDIR}/GeoIPASNum.dat"; fi
       curl -sS -L "${DBURL}/GeoLite2-ASN-CSV.zip" > "${ZIPTEMP}/GeoLite2-ASN-CSV.zip"
@@ -62,4 +62,3 @@ UpdateDatabases(){
 Initialise
 GeoLite2Legacy
 UpdateDatabases
-
