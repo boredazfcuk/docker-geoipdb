@@ -7,6 +7,7 @@ ENV REPO="sherpya/geolite2legacy" \
    APPDEPENDENCIES="git curl python py-ipaddr tzdata"
 
 COPY update-geoip.sh /usr/local/bin/update-geoip.sh
+COPY healthcheck.sh /usr/local/bin/healthcheck.sh
 
 RUN echo "$(date '+%d/%m/%Y - %H:%M:%S') | ***** BUILD STARTED *****" && \
 echo "$(date '+%d/%m/%Y - %H:%M:%S') | Add group, user and required directories" && \
@@ -16,11 +17,11 @@ echo "$(date '+%d/%m/%Y - %H:%M:%S') | Install application dependencies" && \
 echo "$(date '+%d/%m/%Y - %H:%M:%S') | Installing ${REPO}" && \
    git clone -b master "https://github.com/${REPO}.git" "${APPBASE}" && \
 echo "$(date '+%d/%m/%Y - %H:%M:%S') | Set launch script permissions" && \
-   chmod +x "/usr/local/bin/update-geoip.sh" && \
+   chmod +x "/usr/local/bin/update-geoip.sh" "/usr/local/bin/healthcheck.sh" && \
 echo "$(date '+%d/%m/%Y - %H:%M:%S') | ***** BUILD COMPLETE *****"
 
 HEALTHCHECK --start-period=10s --interval=1m --timeout=10s \
-   CMD (if [ $(find "${DBDIR}" -type f -name "Geo*.dat" | wc -l) -ne 3 ] || [ $(find "${DBDIR}" -type f -name "Geo*.dat" -mmin +$((60*24*8)) | wc -l) -ne 0 ]; then exit 1; fi)
+   CMD /usr/local/bin/healthcheck.sh
 
 VOLUME "${DBDIR}"
 WORKDIR "${APPBASE}"
