@@ -55,6 +55,8 @@ UpdateDatabases(){
    fi
    if [ -z "$(find "${DBDIR}" -type f -name 'GeoIPASNum.dat')" ] || [ "$(find "${DBDIR}" -type f -name 'GeoIPASNum.dat' -mmin +$((60*24*6)) | wc -l)" -ne 0 ]; then
       echo "$(date '+%Y-%m-%d %H:%M:%S') INFO:    Installing GeoIP ASNum database"
+      local ZIPTEMP="$(mktemp -d)"
+      local DBTEMP="$(mktemp -d)"
       if [ -e "${DBDIR}/GeoIPASNum.dat" ]; then rm "${DBDIR}/GeoIPASNum.dat"; fi
       wget -qO "${ZIPTEMP}/GeoLite2-ASN-CSV.zip" "${DBURL}/GeoLite2-ASN-CSV.zip"
       python "${APPBASE}/geolite2legacy.py" -i "${ZIPTEMP}/GeoLite2-ASN-CSV.zip" -o "${DBTEMP}/GeoIPASNum.dat"
