@@ -4,7 +4,7 @@ ENV REPO="sherpya/geolite2legacy" \
    DBURL="https://geolite.maxmind.com/download/geoip/database" \
    APPBASE="/GeoLite2Legacy" \
    DBDIR="/usr/share/GeoIP" \
-   APPDEPENDENCIES="git curl python py-ipaddr tzdata"
+   APPDEPENDENCIES="git python py-ipaddr tzdata"
 
 COPY update-geoip.sh /usr/local/bin/update-geoip.sh
 COPY healthcheck.sh /usr/local/bin/healthcheck.sh
@@ -13,9 +13,7 @@ RUN echo "$(date '+%d/%m/%Y - %H:%M:%S') | ***** BUILD STARTED *****" && \
 echo "$(date '+%d/%m/%Y - %H:%M:%S') | Add group, user and required directories" && \
    mkdir -p "${APPBASE}" && \
 echo "$(date '+%d/%m/%Y - %H:%M:%S') | Install application dependencies" && \
-   apk add --no-cache --no-progress ${APPDEPENDENCIES}  && \
-echo "$(date '+%d/%m/%Y - %H:%M:%S') | Installing ${REPO}" && \
-   git clone -b master "https://github.com/${REPO}.git" "${APPBASE}" && \
+   apk add --no-cache --no-progress ${APPDEPENDENCIES} && \
 echo "$(date '+%d/%m/%Y - %H:%M:%S') | Set launch script permissions" && \
    chmod +x "/usr/local/bin/update-geoip.sh" "/usr/local/bin/healthcheck.sh" && \
 echo "$(date '+%d/%m/%Y - %H:%M:%S') | ***** BUILD COMPLETE *****"
