@@ -1,20 +1,19 @@
 FROM alpine:latest
 MAINTAINER boredazfcuk
-ENV REPO="sherpya/geolite2legacy" \
-   DBURL="https://geolite.maxmind.com/download/geoip/database" \
-   APPBASE="/GeoLite2Legacy" \
-   DBDIR="/usr/share/GeoIP" \
-   APPDEPENDENCIES="git python py-ipaddr tzdata"
-
-COPY update-geoip.sh /usr/local/bin/update-geoip.sh
-COPY healthcheck.sh /usr/local/bin/healthcheck.sh
+ARG APPDEPENDENCIES="git tzdata unzip python py-ipaddr"
+ENV APPBASE="/GeoLite2Legacy" \
+   DBDIR="/usr/share/GeoIP"
 
 RUN echo "$(date '+%d/%m/%Y - %H:%M:%S') | ***** BUILD STARTED *****" && \
 echo "$(date '+%d/%m/%Y - %H:%M:%S') | Add group, user and required directories" && \
    mkdir -p "${APPBASE}" && \
 echo "$(date '+%d/%m/%Y - %H:%M:%S') | Install application dependencies" && \
-   apk add --no-cache --no-progress ${APPDEPENDENCIES} && \
-echo "$(date '+%d/%m/%Y - %H:%M:%S') | Set launch script permissions" && \
+   apk add --no-cache --no-progress ${APPDEPENDENCIES}
+
+COPY update-geoip.sh /usr/local/bin/update-geoip.sh
+COPY healthcheck.sh /usr/local/bin/healthcheck.sh
+
+RUN echo "$(date '+%d/%m/%Y - %H:%M:%S') | Set launch script permissions" && \
    chmod +x "/usr/local/bin/update-geoip.sh" "/usr/local/bin/healthcheck.sh" && \
 echo "$(date '+%d/%m/%Y - %H:%M:%S') | ***** BUILD COMPLETE *****"
 

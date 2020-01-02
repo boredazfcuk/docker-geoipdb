@@ -1,13 +1,13 @@
 #!/bin/ash
 
-if [ $(find "${DBDIR}" -type f -name "Geo*.dat" | wc -l) -ne 3 ]; then
-   echo "GeoIP files missing"
+if [ $(find "${DBDIR}" -type f -name "GeoIP.dat" | wc -l) -ne 1 ]; then
+   echo "Error GeoIP data missing"
    exit 1
 fi
 
-if [ $(find "${DBDIR}" -type f -name "Geo*.dat" -mmin +$((60*24*8)) | wc -l) -ne 0 ]; then
-   echo "GeoIP files older than 8 days"
+if [ $(find "${DBDIR}" -type f -name "GeoIP.dat" -mmin +$((60*24*8)) | wc -l) -ne 0 ]; then
+   echo "Error GeoIP data older than 8 days"
    exit 1
 fi
-
+echo "GeoIP data present and up to date"
 exit 0
