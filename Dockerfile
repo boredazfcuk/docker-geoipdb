@@ -8,7 +8,7 @@ RUN echo "$(date '+%d/%m/%Y - %H:%M:%S') | ***** BUILD STARTED *****" && \
 echo "$(date '+%d/%m/%Y - %H:%M:%S') | Add group, user and required directories" && \
    mkdir -p "${app_base_dir}" && \
 echo "$(date '+%d/%m/%Y - %H:%M:%S') | Install application dependencies" && \
-   apk add --no-cache --no-progress ${app_dependencies} &&
+   apk add --no-cache --no-progress ${app_dependencies} && \
    ln -s /usr/bin/python3 /usr/bin/python
 
 COPY update-geoip.sh /usr/local/bin/update-geoip.sh
