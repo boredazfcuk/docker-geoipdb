@@ -1,0 +1,5 @@
+20200209
+
+ - Change: Changed from CMD to ENTRYPOINT launch type
+ - Change: Amended cron launch command to pass command line argument which prevents cron from running on subsequent runs
+ - Change: Launch cron using exec so it inherits PID from parent process
