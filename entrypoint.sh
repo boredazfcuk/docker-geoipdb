@@ -10,6 +10,7 @@ Initialise(){
    if [ -z "${maxmind_licence_key}" ]; then echo "$(date '+%Y-%m-%d %H:%M:%S') ERROR:   Maxmind licence key not specified. Cannot continue - Exiting"; sleep 60; exit 1; fi
    echo "$(date '+%Y-%m-%d %H:%M:%S') INFO:    GeoLite2Legacy directory: ${app_base_dir}"
    echo "$(date '+%Y-%m-%d %H:%M:%S') INFO:    GeoIP Database directory: ${geoip_db_dir}"
+   echo "$(date '+%Y-%m-%d %H:%M:%S') INFO:    Update only: ${update_only:=False}"
    if [ "$(grep -c 'entrypoint.sh' /etc/crontabs/root)" -lt 1 ]; then
       echo "$(date '+%Y-%m-%d %H:%M:%S') INFO:    Initialise crontab"
       minute=$(((RANDOM%60)))
@@ -61,4 +62,4 @@ LaunchCrontab(){
 Initialise
 GeoLite2Legacy
 UpdateDatabase
-if [ -z "${update_only}" ]; then LaunchCrontab; fi
+if [ "${update_only}" = "False" ]; then LaunchCrontab; fi
