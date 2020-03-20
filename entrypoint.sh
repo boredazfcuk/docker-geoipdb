@@ -4,7 +4,7 @@ Initialise(){
    if [ "${#}" -eq 1 ] && [ "${1}" = "--update-only" ]; then update_only="True"; fi
    app_repo="sherpya/geolite2legacy"
    geoip_db_url="https://download.maxmind.com/app/geoip_download?edition_id=GeoLite2-Country-CSV&license_key=${maxmind_licence_key}&suffix=zip"
-   echo -e "\n"
+   echo
    echo "$(date '+%Y-%m-%d %H:%M:%S') INFO:    ***** Starting GeoIPDb container using sherpya's geolite2legacy to convert to the legacy format *****"
    echo "$(date '+%Y-%m-%d %H:%M:%S') INFO:    $(cat /etc/*-release | grep "PRETTY_NAME" | sed 's/PRETTY_NAME=//g' | sed 's/"//g')"
    if [ ! -e "${geoip_db_dir}" ]; then echo "$(date '+%Y-%m-%d %H:%M:%S') WARNING: Database directory does not exist, creating ${geoip_db_dir}"; mkdir -p "${geoip_db_dir}"; fi
