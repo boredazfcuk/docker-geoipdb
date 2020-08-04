@@ -1,4 +1,4 @@
-FROM alpine:latest
+FROM alpine:3.12
 MAINTAINER boredazfcuk
 ARG app_dependencies="git tzdata unzip python3 py3-ipaddr"
 ENV app_base_dir="/GeoLite2Legacy" \
