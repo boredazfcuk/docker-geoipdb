@@ -4,7 +4,7 @@ ARG app_dependencies="git tzdata unzip python3 py3-ipaddr"
 ENV app_base_dir="/GeoLite2Legacy" \
    geoip_db_dir="/usr/share/GeoIP"
 
-RUN echo "$(date '+%d/%m/%Y - %H:%M:%S') | ***** BUILD STARTED *****" && \
+RUN echo "$(date '+%d/%m/%Y - %H:%M:%S') | ***** BUILD STARTED FOR GEOIPDB *****" && \
 echo "$(date '+%d/%m/%Y - %H:%M:%S') | Add group, user and required directories" && \
    mkdir -p "${app_base_dir}" && \
 echo "$(date '+%d/%m/%Y - %H:%M:%S') | Install application dependencies" && \
