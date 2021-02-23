@@ -5,15 +5,15 @@ Initialise(){
    app_repo="sherpya/geolite2legacy"
    geoip_db_url="https://download.maxmind.com/app/geoip_download?edition_id=GeoLite2-Country-CSV&license_key=${maxmind_licence_key}&suffix=zip"
    echo
-   echo "$(date '+%Y-%m-%d %H:%M:%S') INFO:    ***** Starting GeoIPDb container using sherpya's geolite2legacy to convert to the legacy format *****"
-   echo "$(date '+%Y-%m-%d %H:%M:%S') INFO:    $(cat /etc/*-release | grep "PRETTY_NAME" | sed 's/PRETTY_NAME=//g' | sed 's/"//g')"
-   if [ ! -e "${geoip_db_dir}" ]; then echo "$(date '+%Y-%m-%d %H:%M:%S') WARNING: Database directory does not exist, creating ${geoip_db_dir}"; mkdir -p "${geoip_db_dir}"; fi
-   if [ -z "${maxmind_licence_key}" ]; then echo "$(date '+%Y-%m-%d %H:%M:%S') ERROR:   Maxmind licence key not specified. Cannot continue - Exiting"; sleep 60; exit 1; fi
-   echo "$(date '+%Y-%m-%d %H:%M:%S') INFO:    GeoLite2Legacy directory: ${app_base_dir}"
-   echo "$(date '+%Y-%m-%d %H:%M:%S') INFO:    GeoIP Database directory: ${geoip_db_dir}"
-   echo "$(date '+%Y-%m-%d %H:%M:%S') INFO:    Update only: ${update_only:=False}"
+   echo "$(date '+%c') INFO:    ***** Starting GeoIPDb container using sherpya's geolite2legacy to convert to the legacy format *****"
+   echo "$(date '+%c') INFO:    $(cat /etc/*-release | grep "PRETTY_NAME" | sed 's/PRETTY_NAME=//g' | sed 's/"//g')"
+   if [ ! -e "${geoip_db_dir}" ]; then echo "$(date '+%c') WARNING: Database directory does not exist, creating ${geoip_db_dir}"; mkdir -p "${geoip_db_dir}"; fi
+   if [ -z "${maxmind_licence_key}" ]; then echo "$(date '+%c') ERROR:   Maxmind licence key not specified. Cannot continue - Exiting"; sleep 60; exit 1; fi
+   echo "$(date '+%c') INFO:    GeoLite2Legacy directory: ${app_base_dir}"
+   echo "$(date '+%c') INFO:    GeoIP Database directory: ${geoip_db_dir}"
+   echo "$(date '+%c') INFO:    Update only: ${update_only:=False}"
    if [ "$(grep -c 'entrypoint.sh' /etc/crontabs/root)" -lt 1 ]; then
-      echo "$(date '+%Y-%m-%d %H:%M:%S') INFO:    Initialise crontab"
+      echo "$(date '+%c') INFO:    Initialise crontab"
       minute=$(((RANDOM%60)))
       {
          echo "# min   hour    day     month   weekday command"
@@ -26,11 +26,11 @@ Initialise(){
 
 GeoLite2Legacy(){
    if [ ! -d "${app_base_dir}/.git" ]; then
-      echo "$(date '+%Y-%m-%d %H:%M:%S') INFO:    Installing ${app_repo}"
+      echo "$(date '+%c') INFO:    Installing ${app_repo}"
       mkdir -p "${app_base_dir}"
       git clone --quiet --branch master "https://github.com/${app_repo}.git" "${app_base_dir}"
    elif [ "$(date '+%a')" = "Mon" ]; then
-      echo "$(date '+%Y-%m-%d %H:%M:%S') INFO:    Checking ${app_repo} for updates"
+      echo "$(date '+%c') INFO:    Checking ${app_repo} for updates"
       cd "${app_base_dir}" || exit 1
       git pull
       cd / || exit 1
@@ -39,8 +39,8 @@ GeoLite2Legacy(){
 
 UpdateDatabase(){
    if [ -z "$(find "${geoip_db_dir}" -type f -name 'GeoIP.dat')" ] || [ "$(find "${geoip_db_dir}" -type f -name 'GeoIP.dat' -mmin +$((60*24*6)) | wc -l)" -ne 0 ]; then
-      echo "$(date '+%Y-%m-%d %H:%M:%S') INFO:    Installing GeoIP Country database"
-      echo "$(date '+%Y-%m-%d %H:%M:%S') INFO:    This product includes GeoLite2 data created by MaxMind, available from https://www.maxmind.com"
+      echo "$(date '+%c') INFO:    Installing GeoIP Country database"
+      echo "$(date '+%c') INFO:    This product includes GeoLite2 data created by MaxMind, available from https://www.maxmind.com"
       local zip_temp_dir="$(mktemp -d)"
       local db_temp_dir="$(mktemp -d)"
       if [ -e "${geoip_db_dir}/GeoIP.dat" ]; then rm "${geoip_db_dir}/GeoIP.dat"; fi
@@ -48,14 +48,14 @@ UpdateDatabase(){
       python "${app_base_dir}/geolite2legacy.py" -i "${zip_temp_dir}/GeoLite2-Country-CSV.zip" -f "${app_base_dir}/geoname2fips.csv" -o "${db_temp_dir}/GeoIP.dat"
       mv -f "${db_temp_dir}/GeoIP.dat" "${geoip_db_dir}"
       rm -fr "${zip_temp_dir}" "${db_temp_dir}"
-      echo "$(date '+%Y-%m-%d %H:%M:%S') INFO:    GeoIP Country database installation complete"
+      echo "$(date '+%c') INFO:    GeoIP Country database installation complete"
    else
-      echo "$(date '+%Y-%m-%d %H:%M:%S') INFO:    GeoIP Country database installed and up-to-date"
+      echo "$(date '+%c') INFO:    GeoIP Country database installed and up-to-date"
    fi
 }
 
 LaunchCrontab(){
-   echo "$(date '+%Y-%m-%d %H:%M:%S') INFO:    Starting crontab"
+   echo "$(date '+%c') INFO:    Starting crontab"
    exec /usr/sbin/crond -f -L /dev/stdout
 }
 
