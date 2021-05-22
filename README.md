@@ -38,3 +38,5 @@ When this container first starts up, it will create and folders it needs and dis
 When this container performs an update, it will hog CPU resources as is is very processor intensive. As it's not a critical service, I have limited it to only using a single CPU core so it doesn't interfere with more important stuff.
 
 I also set the restart option to 'always' so that the container will automatically start up after host reboots.
+
+Litecoin: LfmogjcqJXHnvqGLTYri5M8BofqqXQttk4
