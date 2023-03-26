@@ -1,7 +1,9 @@
-#FROM alpine:3.12
-FROM alpine:3.14
+#FROM alpine:3.14
+FROM alpine:3.17
 MAINTAINER boredazfcuk
-ARG app_dependencies="git tzdata unzip python3 py3-ipaddr"
+#ARG app_dependencies="git tzdata unzip python3 py3-ipaddr geoip"
+ARG app_dependencies="tzdata geoip"
+
 ENV app_base_dir="/GeoLite2Legacy" \
    geoip_db_dir="/usr/share/GeoIP"
 
@@ -10,7 +12,6 @@ echo "$(date '+%d/%m/%Y - %H:%M:%S') | Add group, user and required directories"
    mkdir -p "${app_base_dir}" && \
 echo "$(date '+%d/%m/%Y - %H:%M:%S') | Install application dependencies" && \
    apk add --no-cache --no-progress ${app_dependencies} && \
-   ln -s /usr/bin/python3 /usr/bin/python && \
 echo "$(date '+%d/%m/%Y - %H:%M:%S') | ***** BUILD COMPLETE *****"
 
 COPY --chmod=0755 entrypoint.sh /usr/local/bin/entrypoint.sh
